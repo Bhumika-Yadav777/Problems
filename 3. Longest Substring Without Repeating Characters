@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        std::string substr={};
+        int length=0;
+        for(int i=0;i<s.size();i++){
+            size_t duplicate = substr.find(s[i]);
+            if (duplicate != std::string::npos) {
+                substr.erase(0, duplicate + 1);
+            }
+            substr+=s[i];
+            if (substr.size() > length) {
+                length = substr.size();
+            }
+        }
+        return length;
+    }
+};
