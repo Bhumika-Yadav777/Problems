@@ -1,1 +1,43 @@
-
+class Solution {
+private:
+    int getBoxIndex(int r,int c){
+        return (r/3)*3+(c/3);
+    }
+    bool backtrack(std::vector<std::vector<char>>& board, int r,int c,
+    std::vector<std::vector<bool>>& rows,
+    std::vector<std::vector<bool>>& cols,
+    std::vector<std::vector<bool>>& boxes){
+        if(r==9) return true;
+        if(c==9) return backtrack(board,r+1,0,rows,cols,boxes);
+        if(board[r][c] !='.') return backtrack(board,r,c+1,rows,cols,boxes);
+        int boxIdx=getBoxIndex(r,c);
+        for(int num=1;num<=9;num++){
+            if(!rows[r][num] && !cols[c][num] && !boxes[boxIdx][num]){
+                board[r][c]='0'+num;
+                rows[r][num]=cols[c][num]=boxes[boxIdx][num]=true;
+                if (backtrack(board,r,c+1,rows,cols,boxes)) return true;
+                board[r][c]='.';
+                rows[r][num]=cols[c][num]=boxes[boxIdx][num]=false;
+            }
+        }
+        return false;
+    }
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+        std::vector<std::vector<bool>> rows(9, std::vector<bool>(10, false));
+        std::vector<std::vector<bool>> cols(9, std::vector<bool>(10, false));
+        std::vector<std::vector<bool>> boxes(9, std::vector<bool>(10, false));
+        for (int r = 0; r < 9; ++r) {
+            for (int c = 0; c < 9; ++c) {
+                if (board[r][c] != '.') {
+                    int num = board[r][c] - '0';
+                    int boxIdx = getBoxIndex(r, c);
+                    rows[r][num] = true;
+                    cols[c][num] = true;
+                    boxes[boxIdx][num] = true;
+                }
+            }
+        }
+        backtrack(board, 0, 0, rows, cols, boxes);
+    }
+};
