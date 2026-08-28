@@ -1,1 +1,49 @@
-
+class Solution {
+public:
+    string lexGreaterPermutation(string s, string target) {
+       int n=s.length();
+       vector<int> s_counts(26,0);
+       for(char c:s){
+        s_counts[c-'a']++;
+       }
+       vector<int> prefix_counts(26,0);
+       int matched_len=0;
+       for(int i=0;i<n;i++){
+        int idx=target[i]-'a';
+        if(s_counts[idx]>prefix_counts[idx]){
+            prefix_counts[idx]++;
+            matched_len++;
+        } else{
+            break;
+        }
+       }
+       for(int i=matched_len;i>=0;i--){
+        if(i<n){
+            int target_idx=target[i]-'a';
+            int next_char_idx=-1;
+            for(int c=target_idx+1;c<26;c++){
+                if(s_counts[c]-prefix_counts[c]>0){
+                    next_char_idx=c;
+                    break;
+                }
+            }
+            if(next_char_idx !=-1){
+                string result=target.substr(0,i);
+                result+=(char)('a'+next_char_idx);
+                prefix_counts[next_char_idx]++;
+                for(int c=0;c<26;c++){
+                    int remaining =s_counts[c]-prefix_counts[c];
+                    if(remaining>0){
+                        result.append(remaining,(char)('a'+c));
+                    }
+                }
+                return result;
+            }
+        }
+        if(i>0){
+            prefix_counts[target[i-1]-'a']--;
+        }
+       }
+       return "";
+    }
+};
