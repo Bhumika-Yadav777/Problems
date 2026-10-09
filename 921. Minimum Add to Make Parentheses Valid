@@ -1,1 +1,19 @@
-
+class Solution {
+public:
+    int minAddToMakeValid(string s) {
+        int open_needed=0;
+        int balance=0;
+        for(char c:s){
+            if(c=='('){
+                balance++;
+            }else{
+                balance--;
+            }
+            if(balance<0){
+                open_needed++;
+                balance=0;
+            }
+        }
+        return open_needed+balance;
+    }
+};
