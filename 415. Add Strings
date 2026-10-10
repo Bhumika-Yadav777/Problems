@@ -1,1 +1,24 @@
+#include <string>
+#include <algorithm>
+
+class Solution {
+public:
+    std::string addStrings(std::string num1, std::string num2) {
+        std::string res = "";
+        int carry = 0;
+        int p1 = num1.length() - 1;
+        int p2 = num2.length() - 1;
+        while (p1 >= 0 || p2 >= 0 || carry) {
+            int digit1 = (p1 >= 0) ? num1[p1] - '0' : 0;
+            int digit2 = (p2 >= 0) ? num2[p2] - '0' : 0;
+            int current_sum = digit1 + digit2 + carry;
+            carry = current_sum / 10;
+            res.push_back((current_sum % 10) + '0');
+            p1--;
+            p2--;
+        }
+        std::reverse(res.begin(), res.end());
+        return res;
+    }
+};
 
