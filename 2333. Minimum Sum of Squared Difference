@@ -1,1 +1,46 @@
+#include <vector>
+#include <cmath>
+#include <numeric>
+#include <algorithm>
+
+class Solution {
+public:
+    long long minSumSquareDiff(std::vector<int>& nums1, std::vector<int>& nums2, int k1, int k2) {
+        int n = nums1.size();
+        long long total_k = (long long)k1 + k2;
+        int max_diff = 0;
+        std::vector<int> diffs(n);
+        long long sum_diffs = 0;
+        for (int i = 0; i < n; ++i) {
+            diffs[i] = std::abs(nums1[i] - nums2[i]);
+            max_diff = std::max(max_diff, diffs[i]);
+            sum_diffs += diffs[i];
+        }
+        if (sum_diffs <= total_k) {
+            return 0;
+        }
+        std::vector<long long> buckets(max_diff + 2, 0);
+        for (int d : diffs) {
+            buckets[d]++;
+        }
+        for (int d = max_diff; d > 0; --d) {
+            if (buckets[d] > 0) {
+                long long use = std::min(total_k, buckets[d]);
+                buckets[d] -= use;
+                buckets[d - 1] += use;
+                total_k -= use;
+                if (total_k == 0) {
+                    break;
+                }
+            }
+        }
+        long long min_square_sum = 0;
+        for (long long d = 1; d <= max_diff; ++d) {
+            if (buckets[d] > 0) {
+                min_square_sum += buckets[d] * (d * d);
+            }
+        }
+        return min_square_sum;
+    }
+};
 
