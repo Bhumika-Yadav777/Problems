@@ -1,1 +1,28 @@
+#include <iostream>
+#include <string>
+#include <cassert>
+
+class Solution {
+public:
+    std::string maxSumOfSquares(int num, int sum) {
+        if (sum == 0) {
+            return (num == 1) ? "0" : "";
+        }
+        if (sum > 9 * num) {
+            return "";
+        }
+        int nines = sum / 9;
+        int remainder = sum % 9;
+        std::string result = std::string(nines, '9');
+        if (remainder > 0) {
+            result += std::to_string(remainder);
+        }
+        int zeros = num - result.length();
+        if (zeros > 0) {
+            result += std::string(zeros, '0');
+        }
+        return result;
+    }
+};
+
 
