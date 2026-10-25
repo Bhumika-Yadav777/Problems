@@ -17,6 +17,7 @@ public:
         for (int i = 0; i < count_equal; i++) {
             result.push_back(count_less + i);
         }
+
         return result;
     }
 };
