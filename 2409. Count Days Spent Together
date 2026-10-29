@@ -1,0 +1,31 @@
+class Solution {
+private:
+    int dateToDayOfYear(const string& date) {
+        int month = stoi(date.substr(0, 3));
+        int day = stoi(date.substr(3, 2));
+        
+        vector<int> daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        
+        int dayCount = 0;
+        for (int i = 0; i < month - 1; ++i) {
+            dayCount += daysInMonth[i];
+        }
+        
+        return dayCount + day;
+    }
+
+public:
+    int countDaysTogether(string arriveAlice, string leaveAlice, string arriveBob, string leaveBob) {
+        int startAlice = dateToDayOfYear(arriveAlice);
+        int endAlice = dateToDayOfYear(leaveAlice);
+        int startBob = dateToDayOfYear(arriveBob);
+        int endBob = dateToDayOfYear(leaveBob);
+        int overlapStart = max(startAlice, startBob);
+        int overlapEnd = min(endAlice, endBob);
+        if (overlapStart <= overlapEnd) {
+            return overlapEnd - overlapStart + 1;
+        }
+        
+        return 0;
+    }
+};
